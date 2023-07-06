@@ -24,7 +24,8 @@ teams_table = """
 CREATE TABLE teams (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    city VARCHAR(55) NOT NULL
+    city VARCHAR(55) NOT NULL,
+    UNIQUE (name, city)
 );
 """
 cur.execute(teams_table)
@@ -33,12 +34,12 @@ cur.execute(teams_table)
 players_table = """
 CREATE TABLE players (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    UNIQUE (first_name, last_name)
 );
 """
 cur.execute(players_table)
-
-
 
 
 
@@ -59,31 +60,33 @@ CREATE TABLE player_yearly_stats (
     id SERIAL PRIMARY KEY,
     player_id INTEGER REFERENCES players(id),
     year INTEGER NOT NULL,
-    pos VARCHAR(15),   
+    age INTEGER, 
+    pos VARCHAR(15),  
     g INTEGER,
     gs INTEGER,
-    mp DECIMAL(4, 2),
-    fg DECIMAL(4, 2),
+    mp_per_g DECIMAL(4, 2),
+    fg_per_g DECIMAL(4, 2),
+    fga_per_g DECIMAL(4, 2),
     fg_pct DECIMAL(4, 2),
-    three_pt DECIMAL(4, 2),
-    three_pt_att DECIMAL(4, 2),
-    three_pt_pct DECIMAL(4, 2),
-    two_pt DECIMAL(4, 2),
-    two_pt_att DECIMAL(4, 2),
-    two_pt_pct DECIMAL(4, 2),
+    fg3_per_g DECIMAL(4, 2),
+    fg3a_per_g DECIMAL(4, 2),
+    fg3_pct DECIMAL(4, 2),
+    fg2_per_g DECIMAL(4, 2),
+    fg2a_per_g DECIMAL(4, 2),
+    fg2_pct DECIMAL(4, 2),
     efg_pct DECIMAL(4, 2),
-    ft DECIMAL(4, 2),
-    fta DECIMAL(4, 2),
+    ft_per_g DECIMAL(4, 2),
+    fta_per_g DECIMAL(4, 2),
     ft_pct DECIMAL(4, 2),
-    orb DECIMAL(4, 2),
-    drb DECIMAL(4, 2),
-    trb DECIMAL(4, 2),
-    ast DECIMAL(4, 2),
-    stl DECIMAL(4, 2),
-    blk DECIMAL(4, 2),
-    tov DECIMAL(4, 2),
-    pf DECIMAL(4, 2),
-    pts DECIMAL(4, 2)
+    orb_per_g DECIMAL(4, 2),
+    drb_per_g DECIMAL(4, 2),
+    trb_per_g DECIMAL(4, 2),
+    ast_per_g DECIMAL(4, 2),
+    stl_per_g DECIMAL(4, 2),
+    blk_per_g DECIMAL(4, 2),
+    tov_per_g DECIMAL(4, 2),
+    pf_per_g DECIMAL(4, 2),
+    pts_per_g DECIMAL(4, 2)
     
 );
 """
