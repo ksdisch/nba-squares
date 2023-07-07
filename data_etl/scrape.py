@@ -10,7 +10,7 @@ from db_utils import add_player_record, add_player_yearly_stats_record, add_play
 from misc_funcs import get_data_type
 
 
-### REMINDER: LaMarcus Aldrige stats may be missing from restarting loop after debugging
+### REMINDER: LaMarcus Aldrige, Keith Benson, stats may be missing from restarting loop after debugging
 
 # Define database connection parameters. These parameters will be read from the environment variables.
 db_params = {
@@ -33,12 +33,16 @@ rosters_table_cols = get_column_names(conn, 'rosters')
 player_yearly_stats_table_cols = get_column_names(conn, 'player_yearly_stats')
 player_awards_table_cols = get_column_names(conn, 'player_awards')
 
+# Skip these for now and add them in after to maintain database integrity
+duplicate_names = ['Chris Johnson', 'Cliff Robinson', 'Marcus Williams'] # http://www.insidehoops.com/forum/showthread.php?288724-NBA-players-that-have-the-same-first-and-last-name
 
 # Loop through each letter of the alphabet
-for letter in alphabet:
+for letter in alphabet[1:]: # ***** REMINDER REMNDER REMINDER TO CHANGE THIS BACK TO AN UNSLICED LIST BEFORE COMMITTING ****** 
     # Define the url that contains player data for players whose last name starts with the current letter.
     player_list_url = f'https://www.basketball-reference.com/players/{letter}/'
 
+    # Implement rate limiting by pausing execution for 4.5 seconds for each iteration.
+    time.sleep(2)
     # Send a GET request to the url and parse the response text with BeautifulSoup.
     response = requests.get(player_list_url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -50,9 +54,6 @@ for letter in alphabet:
 
     # Iterate through each row in the table. Each row corresponds to a player.
     for row in rows:
-        # Implement rate limiting by pausing execution for 4.5 seconds for each iteration.
-        time.sleep(4.5)
-
         # Within each row, find the 'th' tag which corresponds to the player name.
         th = row.find('th', {'scope': 'row'})
         
@@ -64,10 +65,10 @@ for letter in alphabet:
             
             # If an 'a' tag was found, extract the player's name from it.
             if a is not None:
-                # Prepend "https://www.basketball-reference.com" to the url
                 player_name = a.text
-                first_name, last_name = player_name.split()
-
+                name_parts = player_name.split()
+                first_name = name_parts[0]
+                last_name = " ".join(name_parts[1:])
                 # Check if the player already exists in the database. If yes, skip to the next player. If no, add the player to the database.
                 cur = conn.cursor()
                 player_exists_query = "SELECT 1 FROM players WHERE first_name = %s AND last_name = %s"
@@ -77,6 +78,10 @@ for letter in alphabet:
                 # If player already exists, skip to next player
                 if player_exists:
                     print(f"Player {first_name} {last_name} already exists, moving to the next player...")
+                    continue
+                # If player is one with duplicate names, skip for now.
+                elif player_name in duplicate_names:
+                    print(f"There have been multiple players with the name {first_name} {last_name} in NBA history, skipping for now. Remember to go back and add these player's stats in manually...")
                     continue
                 else:
                     # STORE NEW PLAYER RECORD
@@ -95,6 +100,7 @@ for letter in alphabet:
                 
                 # Send a GET request to the player's page and parse the response text with BeautifulSoup.
                 player_url = f'https://www.basketball-reference.com{a["href"]}'
+                time.sleep(2)
                 response = requests.get(player_url)
                 player_soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -108,7 +114,7 @@ for letter in alphabet:
 
                 # Iterate through each row in the table.
                 for row in rows:
-                    time.sleep(4.5) # Rate limiting pause
+                    # time.sleep(4.5) # Rate limiting pause
                     # Implement rate limiting by pausing execution for 4.5 seconds for each iteration.
                     season = row.find('th')
                     if season is not None and season.text != '':
@@ -145,6 +151,7 @@ for letter in alphabet:
                         cell_column = td.get('data-stat')
                         if cell_column == 'team_id' and a is not None:
                             team_url = f'https://www.basketball-reference.com{a["href"]}'
+                            time.sleep(2)
                             response = requests.get(team_url)
                             team_soup = BeautifulSoup(response.text, 'html.parser')
                             team_info_div = team_soup.find('div', {'data-template': 'Partials/Teams/Summary'})
