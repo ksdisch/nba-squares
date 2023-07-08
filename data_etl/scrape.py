@@ -10,7 +10,7 @@ from db_utils import add_player_record, add_player_yearly_stats_record, add_play
 from misc_funcs import get_data_type
 
 
-### REMINDER: LaMarcus Aldrige, Keith Benson, stats may be missing from restarting loop after debugging
+### REMINDER: LaMarcus Aldrige, Nene, Keith Benson, Daequan Cook, Serge Ibaka, Rudy Hackett stats may be missing from restarting loop after debugging
 
 # Define database connection parameters. These parameters will be read from the environment variables.
 db_params = {
@@ -37,7 +37,7 @@ player_awards_table_cols = get_column_names(conn, 'player_awards')
 duplicate_names = ['Chris Johnson', 'Cliff Robinson', 'Marcus Williams'] # http://www.insidehoops.com/forum/showthread.php?288724-NBA-players-that-have-the-same-first-and-last-name
 
 # Loop through each letter of the alphabet
-for letter in alphabet[1:]: # ***** REMINDER REMNDER REMINDER TO CHANGE THIS BACK TO AN UNSLICED LIST BEFORE COMMITTING ****** 
+for letter in alphabet:
     # Define the url that contains player data for players whose last name starts with the current letter.
     player_list_url = f'https://www.basketball-reference.com/players/{letter}/'
 

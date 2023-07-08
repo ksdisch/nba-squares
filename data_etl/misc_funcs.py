@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 
 def get_data_type(s):
     """
@@ -20,3 +21,9 @@ def get_data_type(s):
             return 'float'
         except ValueError:
             return 'str'
+        
+
+
+def scrape_awards(year):
+    url = f'https://www.basketball-reference.com/awards/awards_{year}.html'
+    

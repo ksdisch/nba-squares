@@ -4,34 +4,22 @@ from flask_bootstrap import Bootstrap
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_nav import Nav
-from flask_nav.elements import *
+from flask_nav.elements import Navbar, Subgroup, View, Link, Text, Separator
 from dominate.tags import img
 
 
-###############################################
-#      Define navbar with logo                #
-###############################################
-logo = img(src='/Users/kyledisch/Desktop/MY_PROJECTS/nba-squares/static/imgs/bball.jpeg', height="50", width="50", style="margin-top:-15px")
-#here we define our menu items
-topbar = Navbar(logo,
-                View('News', 'get_news'),
-                View('Live', 'get_live'),
-                View('Programme', 'get_programme'),
-                View('Classement', 'get_classement'),
-                View('Contact', 'get_contact'),
-                )
-
-# registers the "top" menubar
-nav = Nav()
-nav.register_element('top', topbar)
-
-
 app = Flask(__name__)
+
 Bootstrap(app)
+nav = Nav(app)
+
+nav.register_element('my_nav', Navbar(
+    'thenav',
+    View('Home Page', 'index')))
 
 @app.route('/')
-def home():
-    return render_template('index.html', title='Squares Game, NBA Edition')
+def index(): # Home page
+    return render_template('index.html', title='NBA Grid Game')
 
 if __name__ == '__main__':
     app.run(debug=True)
