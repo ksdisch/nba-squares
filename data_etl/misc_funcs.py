@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import requests 
 
 def get_data_type(s):
     """
@@ -13,7 +14,7 @@ def get_data_type(s):
     should remain a string.
     """
     try:
-        int(s)
+        # int(s)
         return 'int'
     except ValueError:
         try:
@@ -21,9 +22,8 @@ def get_data_type(s):
             return 'float'
         except ValueError:
             return 'str'
-        
-
 
 def scrape_awards(year):
     url = f'https://www.basketball-reference.com/awards/awards_{year}.html'
-    
+
+    # response = requests.
