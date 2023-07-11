@@ -10,7 +10,7 @@ from db_utils import add_player_record, add_player_yearly_stats_record, add_play
 from misc_funcs import get_data_type
 
 
-### REMINDER: LaMarcus Aldrige, Nene, Keith Benson, Daequan Cook, Serge Ibaka, Rudy Hackett stats may be missing from restarting loop after debugging
+### REMINDER: Tracy McGrady, Rashard Lewis, LaMarcus Aldrige, Nene, Keith Benson, Daequan Cook, Serge Ibaka, Rudy Hackett stats may be missing from restarting loop after debugging
 
 # Define database connection parameters. These parameters will be read from the environment variables.
 db_params = {

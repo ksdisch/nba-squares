@@ -14,7 +14,7 @@ def get_data_type(s):
     should remain a string.
     """
     try:
-        # int(s)
+        int(s)
         return 'int'
     except ValueError:
         try:
