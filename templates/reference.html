@@ -1,0 +1,96 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}NBA Grid Game{% endblock %}
+
+{% block content %}
+{{ nav.my_nav.render() }}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form method="POST" action="{{ url_for('reference') }}">
+                <div class="form-group row">
+                    <!-- Comparison field -->
+                    <div class="col-md-4">
+                        <label for="comparison">Comparison</label>
+                        <select id="comparison" name="comparison" class="form-control">
+                            <option value="gte" {% if selected_values.comparison == 'gte' %} selected {% endif %}>Greater than or equal to</option>
+                            <option value="lte" {% if selected_values.comparison == 'lte' %} selected {% endif %}>Less than or equal to</option>
+                        </select>
+                    </div>
+
+                    <!-- Value field -->
+                    <div class="col-md-4">
+                        <label for="value">Value</label>
+                        <input type="number" step="0.01" id="value" name="value" value="{{ selected_values.value }}" class="form-control">
+                    </div>
+
+                    <!-- Statistic field -->
+                    <div class="col-md-4">
+                        <label for="stat">Stat</label>
+                        <select id="stat" name="stat" class="form-control">
+                            {% for stat in stat_choices %}
+                                <option value="{{ stat }}" {% if stat == selected_values.stat %} selected {% endif %}>{{ stat }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <!-- Year field (meaning all years since the selected year) -->
+                    <div class="col-md-6">
+                        <label for="year">Year</label>
+                        <select name="year" id="year" class="form-control">
+                            {% for year in range(1947, (current_year + 1)) %}
+                                <option value="{{ year }}" {% if year == selected_values.year %} selected {% endif %}>{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Positions field -->
+                    <div class="col-md-6">
+                        <label for="positions">Positions</label>
+                        <br>
+                        {% for position in position_choices %}
+                            <div class="form-check">
+                                <input type="checkbox" id="{{ position }}" name="positions" value="{{ position }}" {% if position in selected_values.positions %} checked {% endif %}>
+                                <label class="form-check-label" for="{{ position }}">{{ position }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+
+    {% if data %}
+        <div class="row mt-3">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            {% for header in headers %}
+                                <th>{{ header }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in data %}
+                            <tr>
+                                {% for header in headers %}
+                                    <td>{{ player[header] }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="row mt-3">
+            <p>No data available.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

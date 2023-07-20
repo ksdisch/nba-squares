@@ -1,11 +1,60 @@
-<!-- index.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ title }}</title>
-</head>
-<body>
-    <h1>{{ title }}</h1>
-</body>
-</html>
-<!-- End of index.html -->
+{% extends "bootstrap/base.html" %}
+
+{% block title %}NBA Grid Game{% endblock %}
+
+{% block content %}
+{{ nav.my_nav.render() }}
+
+<!-- DEMO -->
+
+<!-- PRODUCTION -->
+<div class="container">
+    <h2>Find players who played for the grid's intersecting teams</h2>
+    
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>  {# Empty cell for top-left corner of grid #}
+                {% for team in x_teams %}
+                    <th>{{ team }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for i, team in y_teams|enumerate %}
+                <tr>
+                    <td>{{ team }}</td>
+                    {% for j, x_team in x_teams|enumerate %}
+                        <td>
+                            {% for player in players_by_square[team + '_' + x_team] %}
+                                <li>{{ player.first_name }} {{ player.last_name }}</li>
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">1</div>
+        <div class="col">2</div>
+        <div class="col">3</div>
+    </div>
+    <div class="row">
+        <div class="col">4</div>
+        <div class="col">5</div>
+        <div class="col">6</div>
+    </div>
+    <div class="row">
+        <div class="col">7</div>
+        <div class="col">8</div>
+        <div class="col">9</div>
+    </div>
+</div>
+
+
+{% endblock %}
+
