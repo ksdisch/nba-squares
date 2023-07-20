@@ -274,12 +274,12 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
 }
 
-# REMINDER**** Start from here when adding the A's: Adding roster record for player Kenny Anderson, team SuperSonics, year 2002...
+# REMINDER**** Start from here when adding the A's:  Kenny Anderson, team SuperSonics, year 2002...
 
-# REMINDER*****De'Aaron Fox data may be compromised in terms of what was added (roster data and age) below, make sure to check on that
+# REMINDER***** START FROM De'Aaron Fox to add the rest of the F's
 
 # Loop through each letter of the alphabet
-for letter in alphabet[1:]:
+for letter in alphabet[6:]:
     print(f"Processing letter {letter}...")
     player_list_url = f'https://www.basketball-reference.com/players/{letter}/'
     time.sleep(4)
