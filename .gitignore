@@ -166,3 +166,4 @@ cython_debug/
 .DS_Store
 nbaenv/bin/dotenv
 nbaenv/bin/tqdm
+.DS_Store
