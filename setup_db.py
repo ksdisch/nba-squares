@@ -94,11 +94,14 @@ cur.execute(player_yearly_stats_table)
 
 # Create players_awards table
 players_awards_table = """
+DROP TABLE IF EXISTS players_awards;
 CREATE TABLE players_awards (
     id SERIAL PRIMARY KEY,
     player_id INTEGER REFERENCES players(id),
-    award_type VARCHAR(50) NOT NULL,
-    year INTEGER NOT NULL
+    year INTEGER NOT NULL,
+    award_name VARCHAR(50) NOT NULL,
+    rank INTEGER NOT NULL,
+    UNIQUE (player_id, year, award_name)
 );
 """
 cur.execute(players_awards_table)
